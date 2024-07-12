@@ -6,10 +6,9 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
-// eslint-disable-next-line import/no-extraneous-dependencies
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
-// const { title } = require('process');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controller/errorController');
 const tourRouter = require('./routes/tourRoutes');
@@ -111,6 +110,8 @@ app.use(
     ]
   })
 );
+
+app.use(compression());
 
 //test middleware
 app.use((req, res, next) => {
