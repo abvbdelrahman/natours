@@ -74,3 +74,40 @@ if (loginForm)
   });
 
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
+
+const signUpForm = document.querySelector('.form--signup');
+
+const signUp = async (name, email, password, passwordConfirm) => {
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: '/api/v1/users/signup',
+      data: {
+        name,
+        email,
+        password,
+        passwordConfirm
+      }
+    });
+    if (res.data.status === 'success') {
+      showAlert('success', 'Sign Up Successfully');
+      window.setTimeout(() => {
+        location.assign('/');
+      }, 1000);
+    }
+  } catch (e) {
+    showAlert('error', e.response.data.message);
+  }
+};
+
+if (document.querySelector('.form--signup')) {
+  document.querySelector('.form--signup').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    signUp(name, email, password, confirmPassword);
+  });
+}
