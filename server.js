@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/*eslint-disable*/
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
@@ -11,7 +11,6 @@ process.on('uncaughtException', err => {
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
-// eslint-disable-next-line no-unused-vars
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
@@ -36,5 +35,12 @@ process.on('unhandledRejection', err => {
   console.log(err.name, err.message);
   server.close(() => {
     process.exit(1);
+  });
+});
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received. Shutting down gracefully...');
+  server.close(() => {
+    console.log('Process terminated gracefully');
   });
 });
